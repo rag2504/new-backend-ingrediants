@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipes</title>
+    <link rel="stylesheet" href="recipes.css">
+    <script>
+        const recipes = {
+            "Spaghetti Carbonara": ["Spaghetti", "Eggs", "Parmesan Cheese", "Pancetta", "Black Pepper"],
+            "Fresh Garden Salad": ["Lettuce", "Tomatoes", "Cucumber", "Olive Oil", "Salt", "Lemon Juice"],
+            "Tomato Basil Soup": ["Tomatoes", "Basil", "Garlic", "Onion", "Vegetable Broth", "Cream"]
+        };
+
+        function showIngredients(recipeName) {
+            const ingredientSection = document.getElementById("ingredients-section");
+            ingredientSection.innerHTML = `<h2>Ingredients for ${recipeName}:</h2>`;
+
+            const ul = document.createElement("ul");
+            recipes[recipeName].forEach(ingredient => {
+                const li = document.createElement("li");
+                li.textContent = ingredient;
+                ul.appendChild(li);
+            });
+
+            ingredientSection.appendChild(ul);
+        }
+    </script>
+</head>
+<body>
+
+    <header class="hero">
+        <nav class="nav-container">
+            <a href="Untitled-1.html" class="uiverse-btn">Home</a>
+            <a href="recipes.html" class="uiverse-btn active">Recipes</a>
+            <a href="#" class="uiverse-btn">Contact Us</a>
+        </nav>
+        <h1 class="title">Recipes</h1>
+        <p>Select a dish to see the ingredients</p>
+    </header>
+
+    <main class="content-container">
+        <section class="recipe-section">
+            <h2>Choose a Recipe</h2>
+            <div class="recipe-grid">
+                <div class="recipe-card" onclick="showIngredients('Spaghetti Carbonara')">
+                    <img src="https://images.unsplash.com/photo-1673442635965-34f1b36d8944?q=80&w=400&h=300" alt="Spaghetti Carbonara">
+                    <h3>Spaghetti Carbonara</h3>
+                </div>
+                <div class="recipe-card" onclick="showIngredients('Fresh Garden Salad')">
+                    <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?q=80&w=400&h=300" alt="Fresh Garden Salad">
+                    <h3>Fresh Garden Salad</h3>
+                </div>
+                <div class="recipe-card" onclick="showIngredients('Tomato Basil Soup')">
+                    <img src="https://images.unsplash.com/photo-1629978448078-c94a0ab6500f?q=80&w=400&h=300" alt="Tomato Basil Soup">
+                    <h3>Tomato Basil Soup</h3>
+                </div>
+            </div>
+        </section>
+
+        <aside id="ingredients-section" class="ingredients-section">
+            <h2>Click a recipe to see the ingredients</h2>
+        </aside>
+    </main>
+
+    <footer class="footer">
+        <p>© 2025 Recipe Finder. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
+
+
+

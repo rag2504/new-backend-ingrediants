@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liked Recipes</title>
+    <link rel="stylesheet" href="liked-recipes.css">
+</head>
+<body>
+
+<header class="hero">
+    <div class="overlay">
+        <h1>Liked Recipes</h1>
+        <p>Your favorite recipes in one place!</p>
+        <div class="nav-container">
+            <div class="nav-left">
+                <a href="Untitled-1.html" class="uiverse-btn">Home</a>
+                <a href="recipes.html" class="uiverse-btn">Recipes</a>
+            </div>
+        </div>
+    </div>
+</header>
+
+<section class="recipe-section">
+    <h2>Your Liked Recipes</h2>
+    <div id="liked-recipes-container" class="recipe-grid"></div>
+</section>
+
+<footer class="footer">
+    <p></p>
+</footer>
+
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const likedRecipesContainer = document.getElementById("liked-recipes-container");
+        const likedRecipes = JSON.parse(localStorage.getItem("likedRecipes")) || [];
+
+        if (likedRecipes.length === 0) {
+            likedRecipesContainer.innerHTML = "<p>No liked recipes yet!</p>";
+            return;
+        }
+
+        likedRecipes.forEach(recipe => {
+            const card = document.createElement("div");
+            card.classList.add("recipe-card");
+            
+            const ingredientCount = recipe.INGREDIENTS.split(",").length;
+            
+            card.innerHTML = `
+                <img src="${recipe.ImgURL}" alt="${recipe.RecipeName}">
+                <h3>${recipe.RecipeName}</h3>
+                <p><strong>Ingredients:</strong> ${ingredientCount} items</p>
+                <button class="uiverse-btn remove-btn" onclick="removeFromLiked('${recipe.RecipeName}')">Remove</button>
+            `;
+            likedRecipesContainer.appendChild(card);
+        });
+    });
+    
+    function removeFromLiked(recipeName) {
+        let likedRecipes = JSON.parse(localStorage.getItem("likedRecipes")) || [];
+        likedRecipes = likedRecipes.filter(recipe => recipe.RecipeName !== recipeName);
+        localStorage.setItem("likedRecipes", JSON.stringify(likedRecipes));
+        location.reload();
+    }
+</script>
+
+</body>
+</html>

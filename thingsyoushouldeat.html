@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Find recipes based on the ingredients you have! Explore delicious dishes and cooking ideas.">
+  <meta name="keywords" content="recipes, cooking, food, dishes, kitchen, ingredients">
+  <meta name="author" content="Recipe Finder">
+  <title>Ingredient-Based Recipe Finder</title>
+  <link rel="stylesheet" href="thingsyoushouldeat.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="overlay">
+      <h1>Let's Cook</h1>
+      <p>Discover recipes based on the ingredients you have!</p>
+    </div>
+  </header>
+
+  <section class="search-section">
+    <h2>Select Your Ingredients</h2>
+    <div class="ingredient-container">
+      <button class="ingredient-btn" onclick="addIngredient('Tomato')">Tomato</button>
+      <button class="ingredient-btn" onclick="addIngredient('Onion')">Onion</button>
+      <button class="ingredient-btn" onclick="addIngredient('Garlic')">Garlic</button>
+      <button class="ingredient-btn" onclick="addIngredient('Cheese')">Cheese</button>
+      <button class="ingredient-btn" onclick="addIngredient('Chicken')">Chicken</button>
+      <button class="ingredient-btn" onclick="addIngredient('Pepper')">Pepper</button>
+      <button class="ingredient-btn" onclick="addIngredient('Mushroom')">Mushroom</button>
+      <button class="ingredient-btn" onclick="addIngredient('Egg')">Egg</button>
+      <button class="ingredient-btn" onclick="addIngredient('Carrot')">Carrot</button>
+      <button class="ingredient-btn" onclick="addIngredient('Potato')">Potato</button>
+      <button class="ingredient-btn" onclick="addIngredient('Beef')">Beef</button>
+      <button class="ingredient-btn" onclick="addIngredient('Fish')">Fish</button>
+      <button class="ingredient-btn" onclick="addIngredient('Basil')">Basil</button>
+      <button class="ingredient-btn" onclick="addIngredient('Cucumber')">Cucumber</button>
+      <button class="ingredient-btn" onclick="addIngredient('Lettuce')">Lettuce</button>
+      <button class="ingredient-btn" onclick="addIngredient('Olive Oil')">Olive Oil</button>
+      <button class="ingredient-btn" onclick="addIngredient('Butter')">Butter</button>
+      <button class="ingredient-btn" onclick="addIngredient('Salt')">Salt</button>
+      <button class="ingredient-btn" onclick="addIngredient('Sugar')">Sugar</button>
+      <button class="ingredient-btn" onclick="addIngredient('Milk')">Milk</button>
+      <button class="ingredient-btn" onclick="addIngredient('Flour')">Flour</button>
+    </div>
+    <h3>Selected Ingredients:</h3>
+    <ul id="selected-ingredients"></ul>
+  </section>
+
+  <script>
+    function addIngredient(ingredient) {
+      const selectedList = document.getElementById('selected-ingredients');
+      let listItem = document.createElement('li');
+      listItem.textContent = ingredient;
+      selectedList.appendChild(listItem);
+    }
+  </script>
+
+  <footer class="footer">
+    <p>© 2025 Recipe Finder. All rights reserved.</p>
+  </footer>
+</body>
+</html>
