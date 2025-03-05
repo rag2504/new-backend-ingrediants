@@ -1,4 +1,5 @@
 
+
 body {
   font-family: 'Poppins', sans-serif;
   margin: 0;
@@ -243,3 +244,131 @@ body {
   font-size: 0.9rem;
 }
 
+/* Existing CSS remains the same, append these media queries at the end of your CSS file */
+
+/* Small devices (phones, 600px and down) */
+@media screen and (max-width: 600px) {
+  /* Hero Section Adjustments */
+  .hero {
+    height: 40vh;
+  }
+
+  .hero h1 {
+    font-size: 2.2rem;
+  }
+
+  .hero p {
+    font-size: 1rem;
+  }
+
+  /* Navigation Adjustments */
+  .nav-container {
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 15px;
+  }
+
+  .nav-left, 
+  .nav-right {
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+  }
+
+  .uiverse-btn {
+    width: 100%;
+    text-align: center;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  /* Recipe Search Container */
+  .recipe-search-container {
+    flex-direction: column;
+    padding: 20px 10px;
+    gap: 15px;
+  }
+
+  .search-section, 
+  .make-with-ingredients-section {
+    width: 100%;
+    padding: 20px 15px;
+  }
+
+  .search-bar {
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 10px 15px;
+  }
+
+  .search-btn {
+    width: 100%;
+    padding: 10px 15px;
+  }
+
+  .make-with-ingredients-btn {
+    width: 100%;
+    padding: 12px 20px;
+    font-size: 1rem;
+  }
+
+  /* Recipe Grid */
+  .recipe-grid {
+    grid-template-columns: 1fr;
+    padding: 0 10px;
+    gap: 15px;
+  }
+
+  .recipe-section h2 {
+    font-size: 1.5rem;
+  }
+
+  .recipe-card {
+    padding: 15px;
+  }
+
+  .recipe-card h3 {
+    font-size: 1rem;
+  }
+}
+
+/* Medium devices (tablets, 601px to 900px) */
+@media screen and (min-width: 601px) and (max-width: 900px) {
+  .hero {
+    height: 50vh;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+  }
+
+  .nav-container {
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  .nav-left, 
+  .nav-right {
+    justify-content: center;
+    width: 100%;
+  }
+
+  .recipe-search-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .recipe-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* Large devices (laptops/desktops, 901px and up) */
+@media screen and (min-width: 901px) {
+  /* Default styles already in place, no additional changes needed */
+}

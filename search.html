@@ -1,121 +1,248 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Recipe Search</title>
-    <style>
-        .recipe-search-container {
-            display: flex;
-            justify-content: space-between;
-            background: #e3f2fd;
-            padding: 40px 20px;
-            gap: 20px;
-        }
-        .search-section {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        }
-        .search-section h2 {
-            font-size: 1.8rem;
-            color: #4a90e2;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .search-bar {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-        }
-        .search-bar input {
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 25px;
-            border: 2px solid #4a90e2;
-            width: 250px;
-            transition: all 0.3s ease;
-        }
-        .search-bar input:focus {
-            outline: none;
-            border-color: #50e3c2;
-            box-shadow: 0 0 10px rgba(80, 227, 194, 0.3);
-        }
-        .search-btn {
-            padding: 12px 20px;
-            font-size: 1rem;
-            border-radius: 25px;
-            background: #4a90e2;
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        .search-btn:hover {
-            background: #50e3c2;
-            transform: scale(1.05);
-        }
-        .make-with-ingredients-section {
-            flex: 1;
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-        }
-        .make-with-ingredients-section h2 {
-            font-size: 1.8rem;
-            color: #ff6b6b;
-            margin-bottom: 20px;
-            text-align: center;
-        }
-        .make-with-ingredients-btn {
-            padding: 15px 30px;
-            font-size: 1.1rem;
-            border-radius: 30px;
-            background: linear-gradient(135deg, #ff6b6b, #4ecdc4);
-            color: white;
-            border: none;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            font-weight: 600;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-        }
-        .make-with-ingredients-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
-            background: linear-gradient(135deg, #ff4757, #2ed573);
-        }
-        .make-with-ingredients-btn:active {
-            transform: translateY(0);
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recipe Finder</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f8f9fa;
+      text-align: center;
+      padding: 20px;
+    }
+    .container {
+      max-width: 800px;
+      margin: auto;
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    input {
+      width: 80%;
+      padding: 10px;
+      font-size: 16px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    .recipe-list {
+      max-height: 200px;
+      overflow-y: auto;
+      margin-top: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      background-color: #fff;
+    }
+    .recipe-item {
+      padding: 10px;
+      border-bottom: 1px solid #eee;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+    .recipe-item:hover {
+      background-color: #f1f1f1;
+    }
+    .recipe-details {
+      display: none;
+      margin-top: 20px;
+      text-align: left;
+      padding: 20px;
+      background: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+    .recipe-details img {
+      max-width: 100%;
+      border-radius: 10px;
+    }
+  </style>
 </head>
 <body>
-    <div class="recipe-search-container">
-        <section class="search-section">
-            <h2>Search Your Recipes</h2>
-            <div class="search-bar">
-                <input type="text" placeholder="Enter your dish..." />
-                <button class="search-btn">Search</button>
-            </div>
-        </section>
-        
-        <section class="make-with-ingredients-section">
-            <h2>Make with Your Ingredients</h2>
-            <button class="make-with-ingredients-btn" onclick="window.location.href='MakeWithIngredients.html'">
-                Find Recipes
-            </button>
-        </section>
-    </div>
+  <div class="container">
+    <h1>Search for a Recipe</h1>
+    <input type="text" id="search" placeholder="Search for a dish...">
+    <div class="recipe-list" id="recipeList"></div>
+    <div class="recipe-details" id="recipeDetails"></div>
+  </div>
+
+  <script>
+    const recipes = [
+      { name: "Plain Roti", ingredients: ["WHEAT FLOUR", "WATER", "SALT"], time: "15 min", steps: ["Mix flour and water", "Knead dough", "Roll and cook"], image: "https://example.com/roti.jpg" },
+      { name: "Tandoori Roti", ingredients: ["WHEAT FLOUR", "YOGURT", "BAKING POWDER", "SALT"], time: "20 min", steps: ["Mix flour, yogurt, baking powder", "Knead dough", "Cook in tandoor"], image: "https://example.com/tandoori_roti.jpg" },
+      {
+    name: "Cheese Balls",
+    ingredients: ['POTATO', 'CHEESE', 'CORN FLOUR', 'SALT', 'PEPPER', 'OIL'],
+    preparationTime: "15 minutes",
+    cookingTime: "15 minutes",
+    dishType: "Snack",
+    cuisine: "Indian",
+    steps: [
+      "Boil and mash potatoes. Grate cheese.",
+      "1. Mix mashed potatoes with cheese, salt, and pepper. 2. Shape into small balls and roll them in cornflour. 3. Heat oil in a pan and deep fry the cheese balls until golden brown. 4. Serve hot with chutney or sauce.",
+    ],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSuJfPOj-tOx8C1qxaay-idMe9l5DoorGMFog&s"
+  },
+  {
+    name: "Veg Seekh Kebab",
+    ingredients: ['PANEER', 'ONION', 'GREEN CHILIES', 'CUMIN', 'CORIANDER', 'GARAM MASALA', 'CORIANDER', 'SALT'],
+    preparationTime: "20 minutes",
+    cookingTime: "20 minutes",
+    dishType: "Snack",
+    cuisine: "Indian",
+    steps: [
+      "Grate mixed vegetables. Crumble cottage cheese and finely chop onions and green chilies.",
+      "1. Mix grated vegetables, crumbled cottage cheese, chopped onions, green chilies, and spices into a dough. 2. Shape the mixture around skewers and cook them in a preheated oven or grill until golden and cooked through. 3. Serve hot with green chutney.",
+    ],
+    imageUrl: "https://www.indianhealthyrecipes.com/wp-content/uploads/2016/06/veg-seekh-kabab-recipe-500x500.jpg"
+  },
+  {
+    name: "Mutton Seekh Kebab",
+    ingredients: ['MINCED MUTTON', 'ONION', 'GREEN CHILIES', 'GINGER', 'GARLIC', 'CUMIN', 'GARAM MASALA', 'CORIANDER', 'CORIANDER', 'SALT'],
+    preparationTime: "20 minutes",
+    cookingTime: "25 minutes",
+    dishType: "Mutton Dish",
+    cuisine: "Indian",
+    steps: [
+      "Grind mutton with ginger, garlic, onions, and spices into a smooth mixture.",
+      "1. Mix the ground mutton with chopped green chilies, coriander, spices, and salt. 2. Shape the mixture into kebabs and skewer them. 3. Grill the kebabs until they are cooked through and golden brown. 4. Serve hot with chutney or naan.",
+    ],
+    imageUrl: "https://www.licious.in/blog/wp-content/uploads/2020/12/Mutton-Seekh-Kebab.jpg"
+  },
+  {
+    name: "Chicken Lollipop",
+    ingredients: ['CHICKEN WINGS', 'GINGER-GARLIC PASTE', 'SOY SAUCE', 'VINEGAR', 'CORN FLOUR', 'SALT', 'PEPPER', 'OIL'],
+    preparationTime: "15 minutes",
+    cookingTime: "15 minutes",
+    dishType: "Chicken Dish",
+    cuisine: "Indian",
+    steps: [
+      "Marinate chicken wings with ginger-garlic paste, soy sauce, vinegar, salt, and pepper.",
+      "1. Coat the marinated chicken wings with cornflour. 2. Heat oil in a pan and deep fry the chicken lollipops until golden and crispy. 3. Serve hot with dipping sauce or chutney.",
+    ],
+    imageUrl: "https://www.yummytummyaarthi.com/wp-content/uploads/2021/11/chicken-lollipop-1.jpeg"
+  },
+  {
+    name: "Paneer Tikka",
+    ingredients: ['PANEER', 'YOGURT', 'GINGER-GARLIC PASTE', 'LEMON', 'GARAM MASALA', 'CUMIN', 'RED CHILI POWDER', 'SALT', 'OIL'],
+    preparationTime: "20 minutes",
+    cookingTime: "15 minutes",
+    dishType: "Snack",
+    cuisine: "Indian",
+    steps: [
+      "Cut paneer into cubes and prepare a marinade with yogurt, ginger-garlic paste, lemon juice, and spices.",
+      "1. Marinate the paneer cubes in the mixture for at least 30 minutes. 2. Skewer the marinated paneer and grill it until golden brown and cooked through. 3. Serve hot with green chutney and lemon wedges.",
+    ],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBKvqnEq2iBJXQcsNlV1z85shATqEmM69l-w&s"
+  },
+  {
+    name: "Hakka Mushroom",
+    ingredients: ['MUSHROOMS', 'ONION', 'BELL PEPPERS', 'GARLIC', 'SOY SAUCE', 'VINEGAR', 'SALT', 'PEPPER', 'OIL'],
+    preparationTime: "10 minutes",
+    cookingTime: "15 minutes",
+    dishType: "Snack",
+    cuisine: "Chinese",
+    steps: [
+      "Slice mushrooms, onions, and bell peppers. Mince garlic.",
+      "1. Heat oil in a wok, sauté garlic, onions, and bell peppers. 2. Add mushrooms, soy sauce, vinegar, salt, and pepper. 3. Stir fry for 5-7 minutes until the mushrooms are cooked and the sauce thickens. 4. Serve hot with rice or noodles.",
+    ],
+    imageUrl: "https://cdn.tarladalal.com/members/9306/big/big_hakka_mushrooms-11879.jpg"
+  },
+  {
+    name: "Corn Fritters",
+    ingredients: ['CORN KERNELS', 'FLOUR', 'GREEN CHILIES', 'ONION', 'CORIANDER', 'CUMIN', 'SALT', 'OIL'],
+    preparationTime: "15 minutes",
+    cookingTime: "15 minutes",
+    dishType: "Snack",
+    cuisine: "Indian",
+    steps: [
+      "Grind corn kernels coarsely. Finely chop onions, green chilies, and coriander.",
+      "1. Mix ground corn with flour, chopped onions, green chilies, coriander, cumin seeds, and salt. 2. Shape into small fritters. 3. Heat oil in a pan and fry the fritters until golden brown. 4. Serve hot with chutney or ketchup.",
+    ],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRECko9q_0eBOjFCfPD6O-tNVJg8LBnJ0APYg&s"
+  },
+  {
+    name: "Pav Sandwich",
+    ingredients: ['PAV', 'ONION', 'TOMATO', 'CUCUMBER', 'CHEESE', 'CHUTNEY', 'SALT', 'PEPPER'],
+    preparationTime: "10 minutes",
+    cookingTime: "10 minutes",
+    dishType: "Snack",
+    cuisine: "Indian",
+    steps: [
+      "Chop onions, tomatoes, and cucumber. Slice cheese.",
+      "1. Slice the pav rolls and spread chutney on both sides. 2. Layer with sliced onion, tomato, cucumber, and cheese. 3. Sprinkle salt and pepper. 4. Close the sandwich and serve.",
+    ],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGFE1zga_aCdWxz4tzz_KmlmZOoZ-epr-OpA&s"
+  },
+  {
+    name: "Rasam",
+    ingredients: ['TAMARIND', 'TOMATO', 'GARLIC', 'GREEN CHILIES', 'MUSTARD SEEDS', 'CURRY LEAVES', 'CORIANDER', 'SALT', 'PEPPER', 'WATER'],
+    preparationTime: "15 minutes",
+    cookingTime: "10 minutes",
+    dishType: "Lunch",
+    cuisine: "Indian",
+    steps: [
+      "Soak tamarind in water and extract juice. Chop tomatoes and garlic.",
+      "1. Heat oil in a pot, add mustard seeds, curry leaves, garlic, and green chilies. 2. Add chopped tomatoes and cook for 2-3 minutes. 3. Add tamarind juice, water, salt, and pepper, and bring to a boil. 4. Simmer for 5-7 minutes and garnish with coriander. Serve hot with rice.",
+    ],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRGFE1zga_aCdWxz4tzz_KmlmZOoZ-epr-OpA&s"
+  },
+  {
+    name: "Tomato Rice",
+    ingredients: ['RICE', 'TOMATO', 'ONION', 'GREEN CHILIES', 'GINGER-GARLIC PASTE', 'CUMIN', 'TURMERIC', 'RED CHILI POWDER', 'GARAM MASALA', 'SALT', 'OIL'],
+    preparationTime: "15 minutes",
+    cookingTime: "20 minutes",
+    dishType: "Rice Dish",
+    cuisine: "Indian",
+    steps: [
+      "Cook rice and chop tomatoes and onions. Prepare ginger-garlic paste.",
+      "1. Heat oil in a pan, sauté onions, green chilies, and ginger-garlic paste. 2. Add chopped tomatoes and cook until soft. 3. Add spices like cumin, turmeric, red chili powder, and salt. 4. Add cooked rice and mix well. Cook for 5 minutes, garnish with coriander. Serve hot.",
+    ],
+    imageUrl: "https://static.toiimg.com/thumb/54673775.cms?width=1200&height=900"
+  },
+  {
+    name: "Curd Pachadi",
+    ingredients: ['YOGURT', 'CUCUMBER', 'COCONUT', 'GREEN CHILIES', 'MUSTARD SEEDS', 'CURRY LEAVES', 'SALT', 'OIL'],
+    preparationTime: "10 minutes",
+    cookingTime: "10 minutes",
+    dishType: "Side Dish",
+    cuisine: "Indian",
+    steps: [
+      "Grate cucumber and prepare coconut paste. Soak mustard seeds in water.",
+      "1. Mix yogurt with grated cucumber and coconut paste. 2. Heat oil in a pan, add mustard seeds, curry leaves, and sauté for 1-2 minutes. 3. Pour the tempering over the yogurt mixture. 4. Serve as a side dish with rice or roti.",
+    ],
+    imageUrl: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTyrSllA9q7aLmTmmyfmm_4_XwatHdJN1CB_Q&s"
+  }
+    ];
+
+    function displayRecipes(query) {
+      const list = document.getElementById("recipeList");
+      list.innerHTML = "";
+      const filteredRecipes = recipes.filter(r => r.name.toLowerCase().includes(query.toLowerCase()));
+      filteredRecipes.forEach(recipe => {
+        const div = document.createElement("div");
+        div.classList.add("recipe-item");
+        div.textContent = recipe.name;
+        div.onclick = () => showRecipeDetails(recipe);
+        list.appendChild(div);
+      });
+    }
+
+    function showRecipeDetails(recipe) {
+      const details = document.getElementById("recipeDetails");
+      details.style.display = "block";
+      details.innerHTML = `
+        <h2>${recipe.name}</h2>
+        <img src="${recipe.image}" alt="${recipe.name}">
+        <p><strong>Time:</strong> ${recipe.time}</p>
+        <p><strong>Ingredients:</strong> ${recipe.ingredients.join(", ")}</p>
+        <h3>Steps:</h3>
+        <ul>${recipe.steps.map(step => `<li>${step}</li>`).join('')}</ul>
+      `;
+    }
+
+    document.getElementById("search").addEventListener("input", (e) => displayRecipes(e.target.value));
+  </script>
 </body>
 </html>

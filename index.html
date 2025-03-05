@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Find recipes based on the ingredients you have! Explore delicious dishes and cooking ideas.">
+  <meta name="keywords" content="recipes, cooking, food, dishes, kitchen, ingredients">
+  <meta name="author" content="Recipe Finder">
+  <title>Ingredient-Based Recipe Finder</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header class="hero">
+    <div class="overlay">
+      <h1>Let's Cook</h1>
+      <p>Discover recipes based on the ingredients you have!</p>
+      <div class="nav-container">
+        <div class="nav-left">
+          <a href="" class="uiverse-btn">Home</a>
+          <a href="recipes.html" class="uiverse-btn">Recipes</a>
+          <a href="" class="uiverse-btn">Contact Us</a>
+        </div>
+        <div class="nav-right">
+          <a href="liked-recipes.html" class="uiverse-btn heart-btn">
+            ❤️ <span>Liked Recipes</span>
+          </a>
+          
+        </div>
+      </div>
+    </div>
+  </header>
+
+<div class="recipe-search-container">
+        <section class="search-section">
+            <h2>Search Your Recipes</h2>
+            <div class="search-bar">
+                <input type="text" placeholder="Enter your dish..." />
+                <button class="search-btn">Search</button>
+            </div>
+        </section>
+        
+        <section class="make-with-ingredients-section">
+            <h2>Make with Your Ingredients</h2>
+            <button class="make-with-ingredients-btn" onclick="window.location.href='IngrediantsList.html'">
+                Find Recipes
+            </button>
+        </section>
+    </div>
+  
+  <section id="recipes-container" class="recipe-grid"></section>
+  <script src="loadRecipes.js"></script>
+
+
+  <section class="recipe-section">
+    <h2>This Month's Featured Dishes</h2>
+    <div class="recipe-grid">
+      <div class="recipe-card">
+        <img src="https://images.unsplash.com/photo-1673442635965-34f1b36d8944?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Dish 1">
+        <h3>Spaghetti Carbonara</h3>
+      </div>
+      <div class="recipe-card">
+        <img src="https://images.unsplash.com/photo-1546793665-c74683f339c1?q=80&w=1887&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Dish 2">
+        <h3>Fresh Garden Salad</h3>
+      </div>
+      <div class="recipe-card">
+        <img src="https://images.unsplash.com/photo-1629978448078-c94a0ab6500f?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Dish 3">
+        <h3>Tomato Basil Soup</h3>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>© 2025 Recipe Finder. All rights reserved.</p>
+  </footer>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+  <script>
+  const ingredientSearch = document.getElementById('ingredientSearch');
+  const ingredientList = document.getElementById('ingredientList');
+  const selectedIngredientsList = document.getElementById('selectedIngredientsList');
+  const findRecipeBtn = document.getElementById('findRecipeBtn');
+  const resultDiv = document.getElementById('result');
+  let selectedIngredients = [];
+  let recipesData = [];
+
+  // Fetch and parse the CSV file
+  Papa.parse('Final1.csv', {
+    download: true,
+    header: true,
+    complete: function(results) {
+      recipesData = results.data;
+      displayIngredients(recipesData.map(recipe => recipe['Recipe Name']));
+      ingredientSearch.addEventListener('input', () => filterIngredients(recipesData.map(recipe => recipe['Recipe Name']), ingredientSearch.value));
+    }
+  });
+
+  function displayIngredients(ingredients) {
+    ingredientList.innerHTML = '';
+    ingredients.forEach(ingredient => {
+      const div = document.createElement('div');
+      div.classList.add('ingredient-item');
+      div.textContent = ingredient;
+      div.addEventListener('click', () => showRecipeDetails(ingredient));
+      ingredientList.appendChild(div);
+    });
+  }
+
+  function filterIngredients(ingredients, query) {
+    const filteredIngredients = ingredients.filter(ingredient => ingredient.toLowerCase().includes(query.toLowerCase()));
+    displayIngredients(filteredIngredients);
+  }
+
+  function showRecipeDetails(recipeName) {
+    const recipe = recipesData.find(r => r['Recipe Name'] === recipeName);
+    if (recipe) {
+      resultDiv.innerHTML = `
+        <h2>${recipe['Recipe Name']}</h2>
+        <p><strong>Cuisine:</strong> ${recipe.Cusine}</p>
+        <p><strong>Dish Type:</strong> ${recipe['Dish Type']}</p>
+        <p><strong>Ingredients:</strong> ${recipe.INGREDIENTS}</p>
+        <p><strong>Preparation Time:</strong> ${recipe['Preparation Time']} minutes</p>
+        <p><strong>Cooking Time:</strong> ${recipe['Cooking Time']} minutes</p>
+        <p><strong>Preparation Steps:</strong> ${recipe['Preparation Steps']}</p>
+        <p><strong>Cooking Steps:</strong> ${recipe['Cooking Steps']}</p>
+        <img src="${recipe['Img URL']}" alt="${recipe['Recipe Name']}">
+      `;
+    } else {
+      resultDiv.innerHTML = '<h2>Recipe not found!</h2>';
+    }
+  }
+
+  function addIngredient(ingredient) {
+    if (!selectedIngredients.includes(ingredient)) {
+      selectedIngredients.push(ingredient);
+      updateSelectedIngredients();
+    }
+  }
+
+  function removeIngredient(ingredient) {
+    selectedIngredients = selectedIngredients.filter(item => item !== ingredient);
+    updateSelectedIngredients();
+  }
+
+  function updateSelectedIngredients() {
+    selectedIngredientsList.innerHTML = '';
+    selectedIngredients.forEach(ingredient => {
+      const li = document.createElement('li');
+      li.textContent = ingredient;
+      const removeBtn = document.createElement('span');
+      removeBtn.textContent = 'x';
+      removeBtn.classList.add('remove');
+      removeBtn.addEventListener('click', () => removeIngredient(ingredient));
+      li.appendChild(removeBtn);
+      selectedIngredientsList.appendChild(li);
+    });
+    findRecipeBtn.disabled = selectedIngredients.length < 3;
+  }
+
+  // Submit the selected ingredients to find recipes locally
+  findRecipeBtn.addEventListener('click', () => {
+    const matchingRecipes = recipesData.filter(recipe =>
+      recipe.INGREDIENTS.split(', ').every(ingredient => selectedIngredients.includes(ingredient))
+    );
+
+    if (matchingRecipes.length === 0) {
+      resultDiv.innerHTML = '<h2>No recipes found with the selected ingredients.</h2>';
+    } else {
+      resultDiv.innerHTML = `<h2>Suggested Recipes:</h2>${matchingRecipes.map(recipe => `
+        <div class="recipe">
+          <img src="${recipe['Img URL']}" alt="${recipe['Recipe Name']}">
+          <h3>${recipe['Recipe Name']}</h3>
+          <p><strong>Preparation Time:</strong> ${recipe['Preparation Time']} minutes</p>
+          <p><strong>Cooking Time:</strong> ${recipe['Cooking Time']} minutes</p>
+          <p><strong>Dish Type:</strong> ${recipe['Dish Type']}</p>
+          <p><strong>Cuisine:</strong> ${recipe.Cusine}</p>
+          <h4>Ingredients:</h4>
+          <ul>${recipe.INGREDIENTS.split(', ').map(ingredient => `<li>${ingredient}</li>`).join('')}</ul>
+          <h4>Steps:</h4>
+          <ul>${recipe['Preparation Steps']} ${recipe['Cooking Steps']}</ul>
+        </div>
+      `).join('')}`;
+    }
+  });
+</script>
+</body>
+</html>
